@@ -19,14 +19,17 @@ void MotorCommand(const void *msgin)
     printf("DESTRA");
   }
   else if(strcmp(last_msg->data.data), 'left'){
-     printf("SINISTRA");
+     printf("SINISTRA\n");
   }
   else if(strcmp(last_msg->data.data), 'on'){
-     printf("SU");
+     printf("SU\n");
   }
   else if(strcmp(last_msg->data.data), 'down')
   {
-     printf("GIU");
+     printf("GIU\n");
+  }
+  else{
+     printf("error topic!\n");
   }
 
 }
