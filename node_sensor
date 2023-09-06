@@ -15,6 +15,8 @@ int main(int argc, char **argv)
 
 //configurazione nodo con valori di default e creazione del nodo "node_sensor"
   rcl_node_options_t node_options = rcl_node_get_default_options();
-  rcl_ret_t ret = rcl_node_init(&node, "node_sensor", "", &node_options);
+  rcl_ret_t ret = rcl_node_init(&node, "node_sensor", "", &node_options); //controllo errore mancante
+
+ret = rcl_publisher_init(&publisher, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "Motor_commands", NULL); //controllo errore mancante
 
 }
