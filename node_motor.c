@@ -10,6 +10,26 @@
 //ConstPtr è uno shared pointer
 
 
+std_msgs__msg__String last_msg; //l'ultimo messaggio ricevuto
+void MotorCommand(const void *msgin)
+{
+  const std_msgs__msg__String *msg = (const std_msgs__msg__String *)msgin;
+  last_msg = *msg; // Sovrascrivi l'ultimo messaggio con il nuovo messaggio ricevuto
+  if(strcmp(last_msg->data.data), 'right'){
+    printf("DESTRA");
+  }
+  else if(strcmp(last_msg->data.data), 'left'){
+     printf("SINISTRA");
+  }
+  else if(strcmp(last_msg->data.data), 'on'){
+     printf("SU");
+  }
+  else if(strcmp(last_msg->data.data), 'down')
+  {
+     printf("GIU");
+  }
+
+}
 int main()
 {
   //parte uguale
@@ -27,16 +47,42 @@ int main()
   rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();  //set vuoto di descrittori
   ret = rcl_wait_set_init(&wait_set, 1, 0, 0, 0, 0, allocator)); //settiamo quello che vogliamo monitoriare in oridine timer, pub, sub, guardie e servizi
   
+  ret = rcl_wait_set_clear(&wait_set); //cancella il set definito prima rimuove tutti gli oggeti in attesa
+  ret = rcl_wait_set_add_subscription(&wait_set, &subscription, NULL);  //aggiunge la sottoscrizione al set di attesa
+
+  //start 
+   while (1) {
+    ret = rcl_wait(&wait_set, RCL_MS_TO_NS(1000)); // risultato dell'attesa dopo 1 sec
+     
+    if (ret == RCL_RET_TIMEOUT) { //è passato 1 sec ma non ci sono stati messaggi
+      printf("No messages received.\n");
+    } 
+    else if (ret != RCL_RET_OK) {
+      fprintf(stderr, "Error in waiting: %s\n", rcl_get_error_string().str);
+      return 1;
+    } 
+    else {
+       //gestisci comandi motore
+      string msg="";
+      MotorCommand(msg);
+    }
+    
+  
+    }
+
+  rcl_subscription_fini(&subscription, &node);
+  rcl_node_fini(&node);
+  rcl_shutdown();
+  return 0;
+
+
+
+
+  
+  }
   
 
-  ret = rcl_wait_set_clear(&wait_set);
-  
 
-  ret = rcl_wait_set_add_subscription(&wait_set, &subscription, NULL);
-  
-  
-
-}
 
 
 
