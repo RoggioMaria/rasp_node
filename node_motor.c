@@ -19,6 +19,20 @@ int main()
 
   rcl_node_options_t node_options = rcl_node_get_default_options(); //configurazione di default per il nodo
   rcl_ret_t ret = rcl_node_init(&node, "node_motor", "", &node_options); //creazione nodo "node_sensor"
+
+  //sottoscrizione al topic "Motor_commands" del nodo "node_sensor"
+  ret = rcl_subscription_init(&subscription, &node, ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, String), "Motor_commands", NULL);
+
+  rcl_allocator_t allocator = rcl_get_default_allocator(); //gestisce lae allocazioni di memoria in maniera sicura all'interno di Ros2
+  rcl_wait_set_t wait_set = rcl_get_zero_initialized_wait_set();  //set vuoto di descrittori
+  ret = rcl_wait_set_init(&wait_set, 1, 0, 0, 0, 0, allocator)); //settiamo quello che vogliamo monitoriare in oridine timer, pub, sub, guardie e servizi
+  
+  
+
+  ret = rcl_wait_set_clear(&wait_set);
+  
+
+  ret = rcl_wait_set_add_subscription(&wait_set, &subscription, NULL);
   
   
 
