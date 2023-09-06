@@ -1,7 +1,8 @@
 #include <rcl/rcl.h> //accesso funzionalità di ROS 2 basilari
 #include <rcl/error_handling.h> //gestione errori applicazioni
 #include <rcl/node.h> //creazione e gestione nodi
-#include <workspace_ros/message_for_motor.h> //creare messaggio per motore
+#include "std_msgs/msg/string.h"  
+#include <stdio.h>
 
 
 //funzione che gestisce i messaggi della seriale
