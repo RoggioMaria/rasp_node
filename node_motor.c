@@ -4,6 +4,7 @@
 #include <rcl/node.h> //creazione e gestione nodi
 #include "std_msgs/msg/string.h"  
 #include <stdio.h>
+#include <string>
 
 
 //funzione che gestisce i messaggi della seriale
